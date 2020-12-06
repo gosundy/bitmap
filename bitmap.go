@@ -2,14 +2,12 @@ package bitmap
 
 import (
 	"errors"
-	"sync"
 )
 
 type BitMap struct {
 	bits     []byte
 	cap      int64
 	oneCount int64
-	sync.RWMutex
 }
 
 var OverflowErr = errors.New("value is more than bitmap cap")
@@ -35,8 +33,6 @@ func (bm *BitMap) SetN(x int64) (bool, error) {
 	div := x / 8
 	mod := byte(x % 8)
 	flag := byte(1 << mod)
-	bm.Lock()
-	defer bm.Unlock()
 	v := bm.bits[div]
 	v &= flag
 	if v > 0 {
@@ -55,8 +51,6 @@ func (bm *BitMap) ResetN(x int64) (bool, error) {
 	div := x / 8
 	mod := byte(x % 8)
 	flag := byte(1 << mod)
-	bm.Lock()
-	defer bm.Unlock()
 	v := bm.bits[div]
 	v &= flag
 	if v == 0 {
@@ -75,8 +69,6 @@ func (bm *BitMap) Get(x int64) (bool, error) {
 	div := x / 8
 	mod := byte(x % 8)
 	flag := byte(1 << mod)
-	bm.RLock()
-	defer bm.RUnlock()
 	v := bm.bits[div]
 	v &= flag
 	if v > 0 {
@@ -87,7 +79,5 @@ func (bm *BitMap) Get(x int64) (bool, error) {
 
 }
 func (bm *BitMap) Len() int64 {
-	bm.RLock()
-	defer bm.RUnlock()
 	return bm.oneCount
 }
