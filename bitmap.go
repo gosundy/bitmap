@@ -20,19 +20,13 @@ func NewBitMap(cap int64) *BitMap {
 	bm.cap = cap
 	return bm
 }
+
 // set bits x position as 1
 func (bm *BitMap) Set(x int64) error {
-	if x > bm.cap {
-		return OverflowErr
-	}
-	div := x / 8
-	mod := byte(x % 8)
-	flag := byte(1 << mod)
-	bm.Lock()
-	defer bm.Unlock()
-	bm.bits[div] |= flag
-	return nil
+	_, err := bm.SetN(x)
+	return err
 }
+
 // set bits x position as 1, if already sed, return false.
 func (bm *BitMap) SetN(x int64) (bool, error) {
 	if x > bm.cap {
@@ -52,6 +46,7 @@ func (bm *BitMap) SetN(x int64) (bool, error) {
 	bm.oneCount++
 	return true, nil
 }
+
 // set bits x position as 0, if had not sed before, return false.
 func (bm *BitMap) ResetN(x int64) (bool, error) {
 	if x > bm.cap {
@@ -71,6 +66,7 @@ func (bm *BitMap) ResetN(x int64) (bool, error) {
 	bm.oneCount--
 	return true, nil
 }
+
 //get x position result, if data is one, return true, else return false
 func (bm *BitMap) Get(x int64) (bool, error) {
 	if x > bm.cap {
