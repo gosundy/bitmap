@@ -32,9 +32,9 @@ goos: darwin
 goarch: amd64
 pkg: github.com/gosundy/bitmap
 BenchmarkSetOneMillion
-BenchmarkSetOneMillion-8         	      38	  28642129 ns/op
+BenchmarkSetOneMillion-8         	     406	   2917147 ns/op
 BenchmarkGetOneMillion
-BenchmarkGetOneMillion-8         	      56	  18399175 ns/op
+BenchmarkGetOneMillion-8         	     417	   2815003 ns/op
 BenchmarkResetSetNOneMillion
-BenchmarkResetSetNOneMillion-8   	      37	  28883458 ns/op
+BenchmarkResetSetNOneMillion-8   	     418	   2820011 ns/op
 ```
